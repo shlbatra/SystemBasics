@@ -1,0 +1,90 @@
+- Filesystem Hierarchy Standard
+- bin
+    - binaries 
+    -  ex. ls, cat
+    - single user mode as root
+- sbin
+    - system binaries for admin
+    - single user mode
+- boot
+    - bootloaders for OS
+- cdrom
+    - legacy
+- dev
+    - devices
+    - everything is file
+    - harddrive ex. disk - sda, partition as sda1, ..
+    - drivers and app access
+- etc
+    - extra
+    - edit to configure
+    - all configs stored
+    - apt -> sources.list (all repos)
+    - all settings
+    - system wide settings
+- lib
+    - libraires
+    - apps use libraries to do diff functions
+    - required by binaries
+- media / mount
+    - mounted drives
+    - now default mount to media
+    - manual to mnt
+- opt
+    - optional folder
+    - manually installed softwares by vendor
+    - ex. virtual box software
+- proc
+    - pseudo files
+    - info for system processes and resources
+    - every process has directory here with all info about process 
+    - processid (proc/pid)
+    - cat /proc/cpuinfo 
+    - cat /proc/uptime
+- root
+    - root user home folder
+    - root permissions to access file
+- run
+    - tempfs file system
+    - runs in RAM and lost when shutdown
+    - process in boottime
+- snap
+    - snap packages stored - apps run diff than regular packages
+    - used by Ubuntu
+- srv
+    - service
+    - service data
+    - run server ex. web or ftp -> files accessed by external user for better security 
+- sys
+    - system
+    - interac with kernel
+    - similar to run, created when booted
+- tmp
+    - temp
+    - files temp stored by app used during session
+- usr
+    - user application
+    - app installed by user 
+    - unix system resource
+    - installed apps reside in bin, sbin, local, library in lib or locallib, also in share, source code in src
+- var   
+    - variable
+    - files and directories expected to grow in size
+    - var/log (log files for system and apps), var/crash, database, temp for printer user - spool
+- home
+    - each user has its own folder
+    - store personal files and docs 
+    - mount home folder in diff location - allows to preserve files
+    - hidden dir (start with .)
+        - store cache 
+        - thumbnails / info used repeatedly
+    - config and local
+        - app settings
+- allow sharing of resources between packages
+- distro - package manager to track softwares 
+
+- disk utility
+- diskutil list
+
+
+

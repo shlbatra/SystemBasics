@@ -1,0 +1,26 @@
+- Shell is like interpretor - executes commands line by line 
+- run .sh files 
+- get shells from command -> cat /etc/shells
+- shell present in bin directory 
+- script using by current terminal -> echo $SHELL
+- script to change shell -> chsh -s /path/to/shell
+- check permissions of file
+    - ls -l <filename>
+- run script by adding permission to file 
+    - chmod +x <filename>
+- execute script
+    - ./<filename>
+- variables
+    - block in memory with address holds value of variable 
+- user defined variables
+- environment variables 
+    - system defined variables 
+- Get input from user 
+    - read command
+- Use variable name as command 
+- Arguments 
+    - pass values when run script with arguments
+- operators
+    - arithmetic
+    - boolean
+- 
