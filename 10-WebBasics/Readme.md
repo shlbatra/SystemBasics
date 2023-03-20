@@ -1,0 +1,44 @@
+- web and websites work 
+- web has 3 components
+    - frontend - browser
+    - backend - business logic like validation
+    - database - storage of data
+- Ex. application
+    - fb store code and data at diff parts of world so it can get to you locally much faster
+    - code that travels to you - frontend code
+        - html
+            - text, image, link
+            - structure of webpage
+            - no styling
+        - css
+            - styling of webpage
+            - colors, fonts, positioning
+        - html and css are static webpage, not interact with like no commenting or no messaging, ex. visitcard websites
+        - javascript
+            - ex. upload photo, send message, like picture or comment
+            - interact with UI
+    - html, css and JS files live on your laptop locally
+    - code that doesnt travel to you - backend code
+        - make it available to others
+        - keep history of messages (data)
+        - data to persist or save data to be available later
+        - JS takes pic uploaded on fb as message and deliver to backend location
+        - backend code
+            - written in diff languages (java, php, JS, python)
+            - validates received image (trusted source)
+            - save image (data) in database
+            - database -> warehouse of data
+        - where do backend code and database live ?
+            - physical buildings with servers inside
+            - "serve" apps 24*7
+        - how friend see your uploaded image ?
+            - logs into fb
+            - get front end code copy with new data 
+        - how facebook decides what you should see ?
+            - isolated spaces for each user
+                - personal data
+                - image
+                - messages
+            - connections between database that are friends
+
+

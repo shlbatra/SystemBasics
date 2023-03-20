@@ -1,0 +1,139 @@
+- python app -> run tests -> build docker image -> push to docker registry -> deploy to server
+- Gitlab -> platform on which you build complete devops workflows
+- CI/CD
+    - Cont. Integration & Cont Deployment
+    - automatically and continously
+        - code changes
+        - test
+        - build 
+        - release
+    - Merge code changes -> remote git repo -> Tests -> Build and Package -> Artifact repo (CI) -> Deployment
+    - Deployment CD (Deploy Dev -> Deploy Stage -> Deploy Prod)
+    - Cont. release code changes to end environment
+- Gitlab 
+    - allows keeping CI/CD and code management in same place
+    - pipeline configuration part of app code
+- How does it work ?
+    - Gitlab Server
+        - Gitlab server/instance hosts app code and pipeline config
+        - Gitlab configs
+        - Manages pipeline execution
+    - Gitlab runners
+        - connected to gitlab server
+        - agents that run CI/CD jobs
+        - Gitlab server assigns pipeline jobs to available runners
+        - multiple runner mantained by Gitlab
+- Demo Project 
+- release pipeline for python app
+- python app -> run tests -> build docker image -> push to docker registry -> deploy to server
+- Tests core part of CI/CD pipeline
+    - verifies new code changes didnt break anything
+    - if tests fail, pipeline fails and new changes wont be deployed
+    - src / tests  
+    - know how to execute tests
+    - Makefile = special file containing shell commands that you create and name
+    - make test 
+- dependencies -> before running test or app, need them (requirements.txt)
+- packages downloaded from internet. Ex. python package index or npm registry
+- run python app -> have python installed, pip installed 
+- run node.js app -> have node installed, npm (yarn installed)
+- run java app -> have java installed, maven or gradle installed
+- start app locally -> make run (run on port 5000) chane using export PORT=5004
+- Build CI/CD pipeline
+    - pipeline written in code (YAML config), called .gitlab-ci.yaml
+    - Run test
+    - Build Image
+    - deploy to server 
+    - Jobs for all above tasks
+    - Ex. run_tests (job name)
+    - specify script (commands to execute)
+    - need -> make command available, pip available, python available (when it runs)
+    - Where job executed ?
+        - pipeline jobs run on gitlab runners (installed on any env.)
+        - shell (simple executor)
+        - instead commands executed inside container
+        - only docker installed on gitlab runner and each job runs in a seperate and isolated container
+        - so, need to provide docker image in job (diff tools available in container based on image used). Ex node.js container have node.js and npm inside container
+        - By default, Gitlab managed runners use Ruby image to start container
+        - for our job, need python not ruby so specify docker image that the job should run
+        - use attribute image: 
+        - need to provide make command->install make command inside container using before_script -> prepare env.
+- Execute pipeline 
+    - commit .gitlab-ci.yml -> automatically execute pipeline
+- Build and push docker image of python app
+    - build docker image and push to docker hub private repo
+    - push/pull to private repo -> need docker login credentials available in gitlab
+    - Secret Type Variables in pipeline
+        - settings -> CI/CD (for Admin users)
+        - Variables (stored outside git repo) for tokens and passwords 
+        - available in pipeline code
+        - key -> Registry_User and Value -> dockeruser, Type variable masked , output using 
+        echo $VARIABLE
+        - build
+            - build docker image from Dockerfile (available in code base)
+            - docker build -t sahil/demo-app:python-app-1.0
+            - docker login -u $REGISTRY_USER -p $REGISTRY_PASS  <registry if not docker hub>
+            - docker push sahil/demo-app:python-app-1.0 (by default, docker hub)
+            - need docker inside docker here to run docker login and docker push commands
+            - Docker in Docker concept -> in docker, we have docker daemon and docker client available
+            - use docker official image -> docker
+            - for docker daemon available -> client execute docker commands, configure service attribute in gitlab (additional container start same time job container) -> job use service at build time. 
+            - Ex. python container -> mysql db container
+                easier and faster to use existing image and run it as additional container than to install mysql for ex. every time job runs - installing mysql instead of using container
+            - Docker Client(job) -> Docker Daemon (service)
+            - to make above two communicate, need to provide same certificate -> provide directory folder, define env varibale -> DOCKER_TLS_CERTDIR -> certificate shared between docker job and docker service container
+            - commit -> gitlab automatically trigger CI/CD pipeline
+- Define stages 
+    - to execute jobs in sequence and not in same time
+    - run_test -> build_image -> deploy
+    - use stages, force order of execution in CI/CD pipeline
+    - multiple jobs in same stage are executed in parallel
+    - use stages attribute with list of stages and add it as attribute to each job
+- Prepare Deployment Server (ubuntu server)
+    - create ubuntu server on Digital Ocean platform
+    - deployment-server (access from gitlab using ssh username@host)
+    - ssh (secure shell) securely access remote servers on internet
+    - ssh key pair used to authenticate hosts to each other
+    - add ssh key in settings 
+        - generate ssh key pair(public + private)
+        - upload public key to digital ocean platform
+        - all servers on DO can be accessed via this public key
+        - create ssh key locally
+            - ssh-keygen   (generate ssh key pair in id_rsa)
+            - digital_ocean_key & digiral_ocean_key.pub
+            - connect to any server using private key
+        - go to droplets 
+            - create deployment server
+            - configure docker on deployment-server
+            - get public IP address of server and connect locally
+            - ssh -i privatekeylocation root@publicip
+            - apt update
+            - apt install docker.io
+            - docker ps (to verify)
+- Deploy App on deployment server
+    - add deploy to gitlab-ci.yaml
+    - connect gitlab to DO server (use ssh)
+        - 1. gitlab runner container needs to ssh into deployment server
+        - add privatekey as Secret File (SSH_KEY file). Enter new line at end.
+        - File type variable -> value saved as temp file and value of var is path of temporary file
+        - disable interactive step -> -o StrictHostKeyChecking=no
+        - 2. execute docker commands next 
+        - first time docker run successfully but second execution, create container on same host port and it will fail -> so before docker run , stop and remove any existing docker containers on port 5000
+        - docker ps -aq (all container listed by id)
+        - xargs docker stop (stop all containers)
+        - xargs docker rm  (remove all containers)
+        - access permissions on ssh_key by default open -> error that file insecure
+        - ls -l <filename> -> give file permissions. so use 400 (r--) - only owner has access
+        - docker run -d (Detached mode or in background)
+        - validate cd ran successfully
+            - 1. ssh and then run docker ps
+            - 2. got to publicipaddress:5000
+        - Delete server on Digital Ocean
+
+
+
+
+
+
+
+    

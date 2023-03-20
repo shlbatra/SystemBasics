@@ -1,0 +1,66 @@
+- Terminal
+    - Windows default terminal - cmd or powershell
+- Bash commands
+    - work on linux or macos
+    - git bash 
+- git bash commands below
+- pwd
+    - print working directory
+- cd 
+    - change directory
+    - cd <dirname>
+- clear / cls
+    - clears terminal
+- ls
+    - list what is in directory
+    - ls -a (all files including hidden files)
+    - ls -l (long/detailed view)
+- mkdir 
+    - make directory in cwd
+    - mkdir <dir>
+- touch 
+    - create empty file
+    - touch <filename>
+- edit file using vi / vim / nano
+- mv 
+    - move file
+    - mv <src dir/file> <tgt dir>
+    - rename file
+    - mv <src dir/file> <tgt dir/newfile> ->newfile is the new name
+- cd ..
+    - go to parent directory
+- cp
+    - copy files
+    - cp <filename> <targetdir/newfilename>
+    - copy directory
+    - cp -r <srcdir> <tgtdir>      (-r recursive when working with directory)
+- rm
+    - delete file
+    - rm <dir/filename>
+    - delete dir
+    - rm -r <dir>
+- sudo
+    - use if not root/admin user
+    - super user do - provide admin privileges to allow execution of certain commands
+- cat
+    - view content of file
+    - cat <filename>
+    - concatenate to end of file
+- head
+    - give first 10 lines of file
+    - head -n 2 <filename> (show top 2 lines)
+- tail 
+    - give last 10 lines of file
+    - tail -n 2
+- grep 
+    - search for text inside file 
+    - grep "tim" <filename>
+- find 
+    - searching location of files and directories recursivily
+    - find <dirlocation> -name *.py   (search by name with regex) 
+    - find .    (. -> cwd)
+- 
+
+
+
+

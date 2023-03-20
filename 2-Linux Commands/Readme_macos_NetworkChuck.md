@@ -1,0 +1,120 @@
+- say
+    - say whatever you want to say
+- history of wifi passwords
+    - security find-generic-password -wa "Sahil WiFi"
+- pbcopy
+    - copy output of command to clipboard
+    - security find-generic-password -wa "Sahil WiFi" | pbcopy
+- caffeinate
+    - keep mac awake
+- cmd + shift + 3
+    - screenshot on mac
+- cmd + shift + 4
+    - allow what part of screenshot to save
+- cmd + ctrl + shift + 4
+    - copy to clipboard
+- change default name 
+    - screenshot
+        - defaults write com.apple.screencapture name "newname"
+    - screentype
+        - defaults write com.apple.screencapture type "jpg"
+    - location 
+        - defaults write com.apple.screencapture location ~/Desktop/
+- history of what downloaded
+    -sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'select LSQuarantineDataURLString from LSQuarantineEvent'
+- delete history of downloaded
+    -sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete LSQuarantineDataURLString from LSQuarantineEvent'
+- passwd
+    - change password
+- update login keychain password
+    - security set-keychain-password
+- cd
+- ls
+- pwd
+- whoami
+- mv src target (move)
+- cp src target (copy)
+- ditto src target (copy)
+- df -h
+    - how much space on harddrive 
+- nano <filename>
+    - edit file 
+    - ctrl + x + y + enter
+- man 
+    - help for commands
+- open 
+    - open any file
+    - open <filename>
+- ping
+- ifconfig 
+- ifconfig en0  (get ip address of mac system)
+- ifconfig en0 | grep inet 
+- ifconfig en0 | grep inet | awk '{ print $2 }'
+- traceroute <website>
+- dig <website>
+    - get DNS info of website
+- ps
+- ps -ax
+- top (processes by CPU)
+- top -o rsize (processes by memory)
+- kill <pid>
+- which $SHELL  
+    - currently which shell are you using
+- bash / zsh
+    - switch shell to bash
+- uptime
+    - how long mac up
+- flush DNS cache
+    - sudo killall -HUP mDNSResponder; sudo killall mDNS ResponderHelper; sudo dscacheutil -flushcache
+- qlmanage
+    - quick preview of file
+    - qlmanage -p <filename>
+- diff
+    - compare files
+- curl  
+    - download files
+    - curl <linktodownload> > targetwherestorefile
+    - curl wttr.in/paris
+- alarm 
+    - leave 1245
+- history
+    - history of all commands
+- disable gatekeeper
+    - install any app on mac
+    - sudo spctl --master-disable
+- brew 
+    - package manager for macOS
+    - install brew
+    - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+- cmatrix 
+    - brew install cmatrix
+    - cmatrix
+- asciiquarium
+    - brew install asciiquarium
+    - asciiquarium
+- toilet
+    - brew install toilet
+    - turn ASCII into character art
+    - toilet Sahil Batra
+- tetris
+    - brew install samtay/tui/tetris
+    - tetris
+- python3
+    - python3 -m http.server   (start python webserver)
+    - easily share files with other
+- shutdown
+    - shutdown -h now
+    - shutdown -r now (restart)
+- sudo touch id
+    - use finger for sudo password
+    - sudo nano /etc/pam.d/sudo
+    - add this line -> auth sufficient pam_tid.so
+    - ctrl +x + y + enter
+    
+
+
+
+
+
+
+

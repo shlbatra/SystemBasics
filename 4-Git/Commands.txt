@@ -1,0 +1,844 @@
+#initialize local repo, .git keep track of all files and sub folders
+git init  
+
+#staging area
+#tracked files 
+#untracked file -> git not tracking any changes to file as not added to staging area
+#checking using ->
+git status 
+
+#local -> staging -> commit(Actual repo)
+# staging area - temp area for what files to be part of commit and tracked
+# commit -> bundle of changes, checkpoint. git store that info. 
+# repo - keep track of version of code
+
+#add files to staging area and tracked by git 
+git add <file name>
+git add . 
+
+#remove file from staging area 
+git rm --cached <file name>
+
+# commit -> only staged files are commited
+git commit -m "message assosciated with commit" 
+
+#add everything and then commit everything
+git commit -am "message assosciated with commit" 
+
+# if modify a tracked file but not staged the modification, it wont be commited
+# if modify a non tracked file , still remain untracked file
+
+#Branches -> variation of code base, independent line of development 
+# master branch (default) is prod code , tested and code reviewed
+# other branch - features development 
+# branch from other branches -> copy from the last commit of that branch
+
+#create new branch 
+git checkout -b new-feature #new branch new-feature checked out
+
+# get back to branch already created 
+git checkout <branchname>
+
+# branch 1 commit ahead of master branch - if additional changes on branches
+
+# view all branches
+git branch 
+
+# merging branches -> made changes on feature branch and add to master branch
+# add commits from feature to master branch 
+git checkout master 
+git merge extended #take work from extended and overlay on master 
+
+# merge conflicts -> combine 2 branches that have conflicting changes 
+git merge extended # conflict content - fix conflicts 
+
+in file show, version of current and new branch -> modify file. 
+
+file shows as -
+
+<<<<<<<<< HEAD 
+print('a')
+===========
+print('b')
+>>>>>>>>>> extended 
+
+save file -> commit result now 
+git commit -am "merge extended" #solve merge conflict 
+
+#Remote repo 
+# create repo on github -> import from existing repo
+# on local repo, in master branch, run following commands 
+
+1.# rename master to main so local and remote aligns 
+git branch -M main
+2. # add remote repo as url to local repo, if have 5-6 diff servers , add diff remote locations. ex. origin below  
+git remote add origin https://github.com/sahil/test.git 
+
+git remote 
+#origin 
+
+# take all code that is local and put it on origin -> branch main 
+git push -u origin main  
+
+# code push to github repo
+
+# push another branch 
+git checkout extended 
+git push origin extended 
+
+# if your branch locally becomes outdated from main after -> git pull 
+
+# clone github repo to local machine
+git clone <link>    #by default, set remote to origin 
+so push -> git push origin <branchname> 
+
+#Stale branch is a git branch without commits for the last few months generally 3 months.
+1. Archive branch 
+git tag archive/<branchname> <branchname>
+git branch -d <branchname>
+To restore branch -
+git checkout -b <branchname> archive/<branchname>
+
+2. Better way 
+    - Create a PR - Go to the the "New pull request" page on the Github and create a pull request.
+    - Set the right name - Name your pull request exactly the same as your source branch.
+            Example: “feature_123”.
+    - Cancel this pull request - Yes, don't merge it! Scroll down and find "Close pull request". Close it without merge.
+    - Delete the branch - Now you can safely delete the branch.
+    - How to restore? - At any time, when you will need it, simply find your closed pull request on the "Pull requests" page by the filter: “head:feature_123”.
+
+#When branch is out of date with master branch then how to fix the feature branch issue 
+
+If you created the Pull Request from a branch in the same project repository, then:
+
+1. make sure you've checked out your branch (the one from the PR): 
+        git checkout your-branch
+2. with your branch checked out, you should do a 
+        git pull origin master
+3. then git push origin your-branch to update the PR.
+        git push origin your-branch
+
+If you forked a repo, created a branch and submit the PR, follow these steps:
+
+1. create a remote with the original project repo: 
+        git remote add upstream 'url.git.here'
+2. make sure you've checked out your branch: 
+        git checkout your-branch
+3. get the latest changes from the upstream to your-branch: 
+        git pull upstream master
+4. after that, push the changes you've got from upstream: 
+        git push origin your-branch
+5. finally, you can go to github page to make sure no more out-of-date is blocking your PR.
+
+3. There are constant updates being made to Starscream/shopify github. 
+By the time you get to this step, your local copy may already be out of date. 
+To ensure your branch is aligned with any important changes, 
+rebase against the `main` branch. To do so enter the following commands
+in your terminal:
+        - git checkout main
+        - git pull
+        - dev up 
+        - git checkout your-unique-branch-name
+        - git rebase main
+Push your branch to github. To do so, enter the following commands in your terminal:
+        - git push origin your-unique-branch-name
+
+
+Git Commits 
+        - A commit in a git repository records a snapshot of all the (tracked) files in your directory. It's 
+        like a giant copy and paste, but even better!
+        - Git wants to keep commits as lightweight as possible though, so it doesn't just blindly copy the entire 
+        directory every time you commit. It can (when possible) compress a commit as a set of changes, or a "delta", 
+        from one version of the repository to the next.
+        - Git also maintains a history of which commits were made when. That's why most commits have ancestor 
+        commits above them -- we designate this with arrows in our visualization. Maintaining history is great 
+        for everyone working on the project!
+        git commit    (Create a new commit)
+
+
+Git Branching
+1. Branches
+        - Branches in Git are incredibly lightweight as well. They are simply pointers to a 
+        specific commit -- nothing more. This is why many Git enthusiasts chant the mantra: branch early, and branch often
+        - Because there is no storage / memory overhead with making many branches, it's easier to logically 
+        divide up your work than have big beefy branches.
+        - When we start mixing branches and commits, we will see how these two features combine. For now 
+        though, just remember that a branch essentially says "I want to include the work of this commit 
+        and all parent commits."
+        Ex. git branch newImage 
+        Ex. commit to newImage : 
+                git checkout newImage; git commit 
+        - create new branch and checkout -> git checkout -b [yourbranchname]
+
+2. Merging in Git 
+        - we need to learn some kind of way of combining the work from two different branches together. 
+        This will allow us to branch off, develop a new feature, and then combine it back in.
+        - The first method to combine work that we will examine is git merge. Merging in Git creates a special 
+        commit that has two unique parents. A commit with two parents essentially means "I want to include 
+        all the work from this parent over here and this one over here, and the set of all their parents."
+        Ex. git checkout main; git merge bugFix 
+
+Make a new branch called bugFix   -> git checkout -b bugFix
+Checkout the bugFix branch with git checkout bugFix  
+Commit once -> git commit 
+Go back to main with git checkout   -> git checkout main 
+Commit another time  -> git commit 
+Merge the branch bugFix into main with git merge -> git merge bugFix
+
+3. Git Rebase (another way of combining work between branches)
+        - Rebasing essentially takes a set of commits, "copies" them, and plops them down somewhere else.
+        - While this sounds confusing, the advantage of rebasing is that it can be used to make 
+        a nice linear sequence of commits. The commit log / history of the repository will be a lot cleaner 
+        if only rebasing is allowed.
+        - Ex. git rebase main 
+              git checkout main 
+              git rebase bugFix
+
+Checkout a new branch named bugFix  -> git checkout -b bugFix
+Commit once -> git commit 
+Go back to main and commit again -> git checkout main; git commit 
+Check out bugFix again and rebase onto main -> git checkout bugFix; git rebase main 
+
+4. Moving around Git 
+        - HEAD 
+                - HEAD is the symbolic name for the currently checked out commit -- it's essentially 
+                what commit you're working on top of.    
+                - HEAD always points to the most recent commit which is reflected in the working tree. Most git 
+                commands which make changes to the working tree will start by changing HEAD.
+                - Normally HEAD points to a branch name (like bugFix). When you commit, the status of bugFix is 
+                altered and this change is visible through HEAD.
+                Ex. git checkout C1; git checkout main; git commit; git checkout c2;  
+        - Detaching HEAD
+                - Detaching HEAD just means attaching it to a commit instead of a branch. This is what it looks like beforehand:
+                        HEAD -> main -> C1
+                E. git checkout C1
+
+
+5. ^ and ~ 
+        ^
+        main^ = first parent of main (HEAD changes to parent of main)
+        MAIN^^ = grand parent of main 
+        Ex. git checkout main^
+        - Also refer HEAD
+                - git checkout c3; git checkoutn HEAD^; git checkout HEAD^ 
+        ~
+        - The tilde operator (optionally) takes in a trailing number that specifies the number of parents you would 
+        like to ascend
+        Ex, git checkout HEAD~4
+
+6. Reassign branch to commit using branch forcing
+        git branch -f main HEAD~3   -> moves by force the main branch to three parents behind HEAD
+        git checkout c6 # moves HEAD to c6 (commit 6) but not branch would refer to it till branch forcing not used
+
+7. Reversing changes in Git 
+        - reversing changes in Git has both a low-level component (staging individual files or chunks) 
+        and a high-level component (how the changes are actually reversed).
+        - git reset -> git reset reverses changes by moving a branch reference backwards in time to an older commit. 
+        In this sense you can think of it as "rewriting history;" git reset will move a branch backwards as 
+        if the commit had never been made in the first place. This method doesnt work well for remote branches
+        Ex. git reset HEAD~1
+
+        - git revert -> reverse changes and share those reversed changes with others, we need to use git revert
+        - git revert HEAD
+
+8. Moving work around in git 
+        - it's a way for developers to say "I want this work here and that work there" in precise, eloquent, flexible ways
+        - git cherry-pick <commit1> <commit2> <...>
+                It's a very straightforward way of saying that you would like to copy a series of commits below 
+                your current location (HEAD).
+                Ex. git cherry-pick C2 C4
+        - Git Interactive rebase
+                what about the situation where you don't know what commits you want? Thankfully git has you 
+                covered there as well! We can use interactive rebasing for this -- it's the best way to review 
+                a series of commits you're about to rebase.
+                git using rebase command with -i option 
+                If you include this option, git will open up a text editir to show you which commits are about 
+                to be copied below the target of the rebase. It also shows their commit hashes and messages, 
+                which is great for getting a bearing on what's what.
+                        - You can reorder commits simply by changing their order in the UI (via dragging and 
+                        dropping with the mouse).
+                        - You can choose to keep all commits or drop specific ones. When the dialog opens, each 
+                        commit is set to be included by the pick button next to it being active. To drop a commit, 
+                        toggle off its pick button.
+                Ex, git rebase -i HEAD~4    (Rebasing 4 commits)
+
+Mixed Bag 
+1. Locally Stacked Commits 
+        - I'm trying to track down a bug but it is quite elusive. In order to aid in my detective work, 
+        I put in a few debug commands and a few print statements. All of these debugging / print statements are 
+        in their own commits. Finally I track down the bug, fix it, and rejoice! Only problem is that I now need 
+        to get my bugFix back into the main branch. If I simply fast-forwarded main, then main would get all 
+        my debug statements which is undesirable.
+        We need to tell git to copy only one of the commits over. So, use -
+                - git rebase -i
+                - git cherry-pick 
+
+2. Juggling Commits 
+        - You have some changes (newImage) and another set of changes (caption) that are related, so they are stacked 
+        on top of each other in your repository (aka one after another).The tricky thing is that sometimes you need 
+        to make a small modification to an earlier commit. In this case, design wants us to change the dimensions 
+        of newImage slightly, even though that commit is way back in our history!!
+        - Way to do this ->
+                - We will re-order the commits so the one we want to change is on top with git rebase -i
+                - We will git commit --amend to make the slight modification
+                - Then we will re-order the commits back to how they were previously with git rebase -i
+                - Finally, we will move main to this updated part of the tree to finish the level (via the method 
+                of your choosing)
+
+                git rebase -i HEAD~2; git commit --amend; git rebase =i HEAD~2; git rebase caption main; 
+
+        Since we move the commits twice, they both get an apostrophe appended. One more apostrophe is added for 
+        the commit we amend, which gives us the final form of the tree.
+        Issue -> The only issue here is that there is a lot of reordering going on, which can introduce rebase 
+        conflicts. 
+        
+        - Let's look at another method with git cherry-pick.
+        - git cherry-pick 
+                - It will plop down a commit from anywhere in the tree onto HEAD (as long as that commit 
+                isn't an ancestor of HEAD). Ex. git cherry-pick C2
+
+                - Way to do this ->
+                - We will re-order the commits so the one we want to change is on top with git rebase -i
+                - We will git commit --amend to make the slight modification
+                - Then we will re-order the commits back to how they were previously with git rebase -i
+                - Finally, we will move main to this updated part of the tree to finish the level (via the method 
+                of your choosing)
+
+                git checkout main; git cherry-pick C2; git commit --amend; git cherry-pick C3; 
+
+3. Git Tags 
+        - Branches are easy to move around and often refer to different commits as work is completed on them. 
+        Branches are easily mutated, often temporary, and always changing.
+        - there's a way to permanently mark historical points in your project's history. For things like 
+        major releases and big merges, use Git Tags
+        - they (somewhat) permanently mark certain commits as "milestones" that you can then reference like a branch.
+        - they never move as more commits are created. You can't "check out" a tag and then complete work on 
+        that tag -- tags exist as anchors in the commit tree that designate certain spots.
+        - Ex. git tag v1 C1
+        - If you leave the commit off, git will just use whatever HEAD is at.
+
+4. Git Describe 
+        - git has a command to describe where you are relative to the closest "anchor" (aka tag). And that 
+        command is called git describe
+        - Git describe can help you get your bearings after you've moved many commits backwards or forwards 
+        in history; this can happen after you've completed a git bisect (a debugging search) 
+        - Ex. git describe <ref>
+        Where <ref> is anything git can resolve into a commit. If you don't specify a ref, git just uses 
+        where you're checked out right now (HEAD).
+        O/P -<tag>_<numCommits>_g<hash>
+        Where tag is the closest ancestor tag in history, 
+        numCommits is how many commits away that tag is, 
+        and <hash> is the hash of the commit being described.
+        Ex. git tag v2 C3
+        git describe main -> v1_2_gC2
+        git descrive side -> v2_1_gC4
+
+Rebasing Over 9000 Times 
+1. Rebasing Multiple Branches
+        - we have a lot of branches going on here! Let's rebase all the work from these branches onto main.
+        Upper management is making this a bit trickier though -- they want the commits to all be in sequential order.
+        So this means that our final tree should have C7' at the bottom, C6' above that, and so on, all in order.
+        If you mess up along the way, feel free to use reset to start over again. Be sure to check out our solution 
+        and see if you can do it in fewer commands!
+        - git rebase main bugFix (This moves bugFix as next step to main)
+          git rebase bogFix side (This moves side as next step to bugfix)
+          git rebase side another (This moves another as next step to side)
+          git rebase another main (This moves main as next step to another or if in sequence, just moves main ahead)
+
+2. Multiple Parents (Specifying Parents) 
+        - Like the ~ modifier, the ^ modifier also accepts an optional number after it.
+        - Rather than specifying the number of generations to go back (what ~ takes), the modifier on ^ specifies 
+          which parent reference to follow from a merge commit. Remember that merge commits have multiple parents, 
+          so the path to choose is ambiguous.
+        - Git will normally follow the "first" parent upwards from a merge commit, but specifying a number 
+          with ^ changes this default behavior.
+          Ex. git checkout main^  -> (follow the first parent after the merge commit)
+              git checkout main^2 -> (follow the second parent after the merge commit)
+        - The ^ and ~ modifiers can make moving around a commit tree very powerful
+          Ex. git checkout HEAD~;     ->  Go to parent 
+              git checkout HEAD^2;    ->  Go to second parent 
+              git checkout HEAD~2;    ->  Go to 2 parents above current commit
+          Chaining -> git checkout HEAD~^2~2 
+          Ex, git branch bugWork main~^2~ or main^^2^ 
+
+3. Branch Spaghetti 
+        - Here we have main that is a few commits ahead of branches one two and three. For whatever reason, 
+        we need to update these three other branches with modified versions of the last few commits on main.
+        Branch one needs a re-ordering of those commits and an exclusion/drop of C5. Branch two just needs a pure 
+        reordering of the commits, and three only needs one commit transferred. 
+        Soln -> 
+        got checkout one 
+        git cherry-pick C4 C3 C2   # Take the three commits and adds them to branch  
+        git checkout two 
+        git cherry-pick C5 C4 C3 C2 # Take the four commits and adds them to branch 
+        git branch -f three C2  # Reassigns C2 commit to branch name three 
+
+Push and Pull -- Git Remotes 
+Clone Intro 
+1. Git Remotes 
+        - remote repositories have a bunch of great properties:
+                - First and foremost, remotes serve as a great backup! Local git repositories have the ability 
+                to restore files to a previous state (as you know), but all that information is stored locally. 
+                By having copies of your git repository on other computers, you can lose all your local data and 
+                still pick up where you left off.
+                - More importantly, remotes make coding social! Now that a copy of your project is hosted 
+                elsewhere, your friends can contribute to your project (or pull in your latest changes) very easily.
+
+        It's become very popular to use websites that visualize activity around remote repos (like GitHub), 
+        but remote repositories always serve as the underlying backbone for these tools. So it's important to 
+        understand them!
+
+        - git clone in the real world is the command you'll use to create local copies of remote repositories 
+        (from github for example). 
+        - We use this command a bit differently in Learn Git Branching though -- git clone actually makes a 
+        remote repository out of your local one. Sure it's technically the opposite meaning of the real command, 
+        but it helps build the connection between cloning and remote repository work, so let's just run with it 
+        for now.
+        Ex. git clone (Create copy of local repo - called remote. Local repo wll have o/main pointing to remote)
+
+2. Git Remote Branches 
+        - The first thing you may have noticed is that a new branch appeared in our local repository called o/main. 
+        This type of branch is called a remote branch; remote branches have special properties 
+        because they serve a unique purpose.
+        - Remote branches reflect the state of remote repositories (since you last talked to those remote repositories)
+        They help you understand the difference between your local work and what work is public -- a critical step 
+        to take before sharing your work with others.
+        - Remote branches have the special property that when you check them out, you are put into detached HEAD mode. 
+        Git does this on purpose because you can't work on these branches directly; you have to work elsewhere and 
+        then share your work with the remote (after which your remote branches will be updated).Remote branches are 
+        on your local repository, not on the remote repository.
+        - What is o/?
+        remote branches also have a (required) naming convention -- they are displayed in the format of:
+                <remote name>/<branch name>
+        Hence, if you look at a branch named o/main, the branch name is main and the name of the remote is o.
+
+        Most developers actually name their main remote origin. This is so common that git actually sets up your 
+        remote to be named origin when you git clone a repository. Unfortunately the full name of origin does not 
+        fit in our UI, so we use o as shorthand :( Just remember when you're using real git, your remote is 
+        probably going to be named origin!
+        - Ex. git checkout o/main; git commit
+        git put us into detached HEAD mode and then did not update o/main when we added a new commit. 
+        This is because o/main will only update when the remote updates
+
+3. Git Fetch 
+        - Working with git remotes really just boils down to transferring data to and from other repositories. As 
+        long as we can send commits back and forth, we can share any type of update that is tracked by git (and 
+        thus share work, new files, new ideas, love letters, etc.).
+        - fetch data from a remote repository using -> Git Fetch 
+        - Ex. git fetch 
+        Commits C2 and C3 were downloaded to our local repository, and our remote branch o/main was updated to 
+        reflect this. Our local main stays on the same commit as before. 
+        - git fetch performs two main steps, and two main steps only. It:
+                - downloads the commits that the remote has but are missing from our local repository, and...
+                - updates where our remote branches point (for instance, o/main)
+        - git fetch essentially brings our local representation of the remote repository into synchronization with 
+        what the actual remote repository looks like.
+        - remote branches reflect the state of the remote repositories since you last talked to those remotes. 
+        git fetch is the way you talk to these remotes. Git fetch usually talks to the remote repository through 
+        the Internet (via a protocol like http:// or git://).
+        - git fetch, however, does not change anything about your local state. It will not update your main branch 
+        or change anything about how your file system looks right now.
+        - This is important to understand because a lot of developers think that running git fetch will make 
+        their local work reflect the state of the remote. It may download all the necessary data to do that, 
+        but it does not actually change any of your local files.
+
+4. Git Pull
+        - After git fetch, let's update our work to reflect those changes.
+        - Use following commands -> 
+                - git cherry-pick o/main
+                - git rebase o/main
+                - git merge o/main
+        - The workflow of fetching remote changes and then merging them is so common that git actually provides 
+        a command that does both at once! That command is git pull.
+        Ex. git fetch; git merge o/main -> we downloaded C3 with a fetch and then merged in that work with 
+        git merge o/main. Now our main branch reflects the new work from the remote (in this case, named origin)
+        Ex. git pull does the same exact thing as well 
+
+5. Simulating Collaboration
+        -  we need to essentially "pretend" that the remote was updated by one of your coworkers / friends / 
+        collaborators, sometimes on a specific branch or a certain number of commits.
+        - Introduce apty named command
+                -> git fakeTeamwork -> simply plop down a commit on main or the remote was updated with a new commit
+                -> git fakeTeamwork foo 3 (branch name and number of commits)
+        - Ex. git clone                 #build local from remote 
+              git fakeTeamwork main 2   #build 2 commits on remote repo main 
+              git commit                #commit a change on local repo
+              git pull                  #pull changes from remote to local and merge with main 
+
+6. Git Push 
+        - the way to upload shared work is the opposite of downloading shared work. And what's the opposite 
+        of git pull? git push - git push as a command to "publish" your work.
+        - git push is responsible for uploading your changes to a specified remote and updating that remote to 
+        incorporate your new commits. Once git push completes, all your friends can then download your work from 
+        the remote.
+        - the behavior of git push with no arguments varies depending on one of git's settings called push.default.
+        Ex value -> upstream
+         git push -> the remote received commit C2, the branch main on the remote was updated to point at C2, and 
+         our own reflection of the remote (o/main) was updated as well. Everything is in sync!
+
+7. Diverged Work 
+        - The difficulty comes in when the history of the repository diverges.
+        - Example Situation -> 
+        - Imagine you clone a repository on Monday and start dabbling on a side feature. By Friday you are ready 
+        to publish your feature -- but oh no! Your coworkers have written a bunch of code during the week that's 
+        made your feature out of date (and obsolete). They've also published these commits to the shared remote 
+        repository, so now your work is based on an old version of the project that's no longer relevant.
+        - In this case, the command git push is ambiguous. If you run git push, should git change the remote 
+        repository back to what it was on Monday? Should it try to add your code in while not removing the new code? 
+        Or should it totally ignore your changes since they are totally out of date?
+        - Because there is so much ambiguity in this situation (where history has diverged), git doesn't allow you 
+        to push your changes. It actually forces you to incorporate the latest state of the remote before being 
+        able to share your work.
+        Ex. git push -> It can fail when your most recent commit C3 is based off of the remote at C1. The 
+        remote has since been updated to C2 though, so git rejects your push. 
+        How do you resolve this situation? It's easy, all you need to do is base your work off of the most 
+        recent version of the remote branch -> move your work via rebasing
+        Ex to fix the above command 
+        -> Git Fetch 
+        git fetch; git rebase o/main; git push; -> We updated our local representation 
+        of the remote with git fetch, rebased our work to reflect the new changes in the remote, and then pushed 
+        them with git push. 
+        -> Git Merge 
+        Although git merge doesn't move your work (and instead just creates a merge commit), it's a way to tell 
+        git that you have incorporated all the changes from the remote. This is because the remote branch is now 
+        an ancestor of your own branch, meaning your commit reflects all commits in the remote branch.
+        git fetch; git merge o/main; git push -> We updated our local representation of the remote with git fetch, 
+        merged the new work into our work (to reflect the new changes in the remote), and then pushed them with 
+        git push.
+        -> rebase 
+        git pull --rebase;git push;  is shorthand for a fetch and a rebase
+        -> git pull; git push; 
+        This workflow of fetching, rebase/merging, and pushing is quite common.
+
+        - Clone your repo -> git clone 
+        - Fake some teamwork (1 commit) -> git faketeamwork
+        - Commit some work yourself (1 commit) -> git commit 
+        - Publish your work via rebasing -> git pull --rebase; git push; 
+
+8. Remote Rejected 
+        - If you work on a large collaborative team it's likely that main is locked and requires some Pull Request 
+        process to merge changes. If you commit directly to main locally and try pushing you will be greeted 
+        with a message similar to this:
+        Error -> ! [remote rejected] main -> main (TF402455: Pushes to this branch are not permitted; you must use a pull request to update this branch.)
+        - The remote rejected the push of commits directly to main because of the policy on main requiring pull 
+        requests to instead be used. You meant to follow the process creating a branch then pushing that branch 
+        and doing a pull request, but you forgot and committed directly to main. Now you are stuck and cannot push 
+        your changes.
+        - Solution 
+          Create another branch called feature and push that to the remote. Also reset your main back to be in sync 
+          with the remote otherwise you may have issues next time you do a pull and someone else's commit conflicts 
+          with yours.
+          Commands -> 
+          git checkout -b feature 
+          git commit 
+          git push origin feature 
+
+          Answer 
+          git checkout -b feature C2 
+          git push origin feature 
+          git branch -f main C1
+          git checkout feature 
+
+
+To Origin And Beyond -- Advanced Git Remotes
+1. Merging feature branches
+        - It's common for developers on big projects to do all their work on feature branches (off of main) 
+        and then integrate that work only once it's ready. This is similar to the previous lesson 
+        (where side branches get pushed to the remote), but here we introduce one more step.
+        - Some developers only push and pull when on the main branch -- that way main always stays updated to 
+        what is on the remote (o/main).
+        - So for this workflow we combine two things:
+        a. integrating feature branch work onto main, and
+        b. pushing and pulling from the remote
+        Ex. Update main and push work 
+                git pull --rebase; git push;   
+                        - rebased our work onto new commits from remote, and
+                        - published our work to the remote
+
+        Steps to do -
+        1. There are three feature branches -- side1 side2 and side3
+        2. We want to push each one of these features, in order, to the remote
+        3. The remote has since been updated, so we will need to incorporate that work as well
+        Commands ->
+        git checkout main
+        git rebase side1        # main goes below side1 
+        git rebase side2        # main goes below side2
+        git rebase side3        # main goes below side3
+        git pull --rebase       # git pull (sync o/main commit on local and remote) 
+                                # git rebase o/main 
+        git push                # 
+
+
+2. Why not merge ?
+        - In order to push new updates to the remote, all you need to do is incorporate the latest changes from 
+        the remote. That means you can either rebase or merge in the remote branch (e.g. o/main).
+        - There's a lot of debate about the tradeoffs between merging and rebasing in the development community.      
+        Pros:
+        Rebasing makes your commit tree look very clean since everything is in a straight line
+        Cons:
+        Rebasing modifies the (apparent) history of the commit tree.
+        For example, commit C1 can be rebased past C3. It then appears that the work for C1' came 
+        after C3 when in reality it was completed beforehand. Some developers love to preserve history and thus 
+        prefer merging. Others (like myself) prefer having a clean commit tree and prefer rebasing. 
+        It all comes down to preferences
+        Steps to do -
+        1. There are three feature branches -- side1 side2 and side3
+        2. We want to push each one of these features, in order, to the remote
+        3. The remote has since been updated, so we will need to incorporate that work as well
+        git checkout main       # activate main  
+        git pull                # pull all changes down from remote to local 
+        git merge side1         # merge side1 with main 
+        git merge side2         # merge side2 with main 
+        git merge side3         # merge side3 with main 
+        git push                # push all changes back to remote here 
+
+3. Remote Tracking Branches 
+        - git knew the main branch was related to o/main. Sure these branches have similar names and it might make 
+        logical sense to connect the main branch on the remote to the local main branch, but this connection is 
+        demonstrated clearly in two scenarios:
+        - During a pull operation, commits are downloaded onto o/main and then merged into the main branch. 
+        The implied target of the merge is determined from this connection.
+        - During a push operation, work from the main branch was pushed onto the remote's main branch (which was 
+        then represented by o/main locally). The destination of the push is determined from the connection 
+        between main and o/main.
+        - this connection between main and o/main is explained simply by the "remote tracking" property of branches. 
+        The main branch is set to track o/main -- this means there is an implied merge target and implied push 
+        destination for the main branch.
+        - You may be wondering how this property got set on the main branch when you didn't run any commands 
+        to specify it. Well, when you clone a repository with git, this property is actually set for you 
+        automatically. During a clone, git creates a remote branch for every branch on the remote (aka branches 
+        like o/main). It then creates a local branch that tracks the currently active branch on the remote, which 
+        is main in most cases.
+        - Once git clone is complete, you only have one local branch (so you aren't overwhelmed) but you 
+        can see all the different branches on the remote (if you happen to be very curious). It's the best 
+        of both worlds!
+        - This also explains why you may see the following command output when cloning:
+                local branch "main" set to track remote branch "o/main"
+        - You can make any arbitrary branch track o/main, and if you do so, that branch will have the same implied 
+        push destination and merge target as main. This means you can run git push on a branch named totallyNotMain
+        and have your work pushed to the main branch on the remote!
+        - There are two ways to set this property. 
+                1. The first is to checkout a new branch by using a remote branch as the specified Ex. 
+                        git checkout -b totallyNotMain o/main
+                Running above commands creates a new branch named totallyNotMain and sets it to track o/main.
+                Ex. git checkout -b foo o/main; git pull; 
+                we used the implied merge target of o/main to update the foo branch. Note how main doesn't get updated!!
+                Ex. git checkout -b foo o/main; git commit; git push; 
+                2. Another way to set remote tracking on a branch is to simply use the git branch -u option. Running
+                        git branch -u o/main foo
+                will set the foo branch to track o/main. 
+                If foo is currently checked out you can even leave it off:
+                        git branch -u o/main
+                Ex. git branch -u o/main foo; git commit; git push; 
+        - Exercise :  
+                git checkout -b side o/main   # track side branch to remote main  
+                git commit    # add local commit to side 
+                git pull --rebase     # get latest updates from remote and merges with local changes in single line
+                git push # push all changes back to remote repo 
+
+4. Push Arguments 
+        - You learned in the remote tracking lesson that git figured out the remote and the branch to push to 
+        by looking at the properties of the currently checked out branch (the remote that it "tracks"). This is 
+        the behavior with no arguments specified, but git push can optionally take arguments in the form of:
+                git push <remote> <place>
+        Ex. git push origin main
+                - Go to the branch named "main" in my repository, grab all the commits, 
+                and then go to the branch "main" on the remote named "origin". Place whatever commits are missing 
+                on that branch and then tell me when you're done.
+                - By specifying main as the "place" argument, we told git where the commits will come from and 
+                where the commits will go. It's essentially the "place" or "location" to synchronize between the two 
+                repositories.
+                - Keep in mind that since we told git everything it needs to know (by specifying both arguments), 
+                it totally ignores where we are checked out!
+                Ex. git checkout C0; git push origin main # main got updated on the remote since we specified those arguments
+                git checkout C0; git push -> Command fails as HEAD is not checked out on remote tracking branch 
+                - Exercise -> Update foo and main on remote 
+                - git push origin main; git push origin foo; 
+        - <place> argument details 
+        - what if we wanted the source and destination to be different? 
+        - What if you wanted to push commits from the foo branch locally onto the bar branch on remote?
+        - In order to specify both the source and the destination of <place>, simply join the two together 
+        with a colon:
+                git push origin <source>:<destination>
+        This is commonly referred to as a colon refspec. Refspec is just a fancy name for a location that git 
+        can figure out (like the branch foo or even just HEAD~1).
+        Once you are specifying both the source and destination independently, you can get quite fancy and 
+        precise with remote commands. 
+        Ex. git push origin foo^:main
+        git resolved foo^ into a location, uploaded whatever commits that weren't present yet on the remote, 
+        and then updated destination.
+        Ex. git push origin main:newBranch 
+        What if the destination you want to push doesn't exist? No problem! Just give a branch name and 
+        git will create the branch on the remote for you.
+        - Exercise :
+                git push origin main^:foo   # track main^ local to foo remote
+                git push foo:main           # track foo local on main remote  
+
+5. git fetch Arguments 
+        - The arguments for git fetch are actually very, very similar to those for git push. It's the same type 
+        of concepts but just applied in the opposite direction (since now you are downloading commits 
+        rather than uploading).
+        Ex. git fetch origin foo
+        Git will go to the foo branch on the remote, grab all the commits that aren't present locally, 
+        and then plop them down onto the o/foo branch locally.  We download only the commits from foo and place them on o/foo.
+        - why did git plop those commits onto the o/foo remote branch rather than just plopping them onto my 
+        local foo branch? I thought the <place> parameter is a place that exists both locally and on the remote?
+        Well git makes a special exception in this case because you might have work on the foo branch that you 
+        don't want to mess up!! This ties into the earlier lesson on git fetch -- it doesn't update your local 
+        non-remote branches, it only downloads the commits (so you can inspect / merge them later).
+        - what happens if I explicitly define both the source and destination with <source>:<destination>?"
+        If you feel passionate enough to fetch commits directly onto a local branch, then yes you can specify 
+        that with a colon refspec. You can't fetch commits onto a branch that is checked out, but otherwise 
+        git will allow this.
+        Here is the only catch though -- <source> is now a place on the remote and 
+        <destination> is a local place to put those commits. It's the exact opposite of git push. 
+        - What if the destination doesn't exist before I run the command? 
+        Git made the destination locally before fetching, just like git will make the destination on remote 
+        before pushing (if it doesn't exist).
+        - If git fetch receives no arguments, it just downloads all the commits from the remote onto all the remote branches
+        - Exercise :
+                git fetch origin foo:main       # set remote foo to local main 
+                git fetch origin main^:foo      # set one commit up of remote main to local foo  
+                git checkout foo                # activate foo branch 
+                git merge main                  # merge foo with main 
+
+6. Oddities of Source 
+        - Git abuses the <source> parameter in two weird ways. These two abuses come from the fact that you can 
+        technically specify "nothing" as a valid source for both git push and git fetch. 
+        The way you specify nothing is via an empty argument:
+                git push origin :side
+                git fetch origin :bugFix
+        - pushing "nothing" to a remote branch do? It deletes it!
+        - git push origin :foo -> we successfully deleted the foo branch on remote by pushing the concept of "nothing" to it.
+        - fetching "nothing" to a place locally actually makes a new branch
+        - git fetch origin  :bar -> Create a new bar branch where HEAD is (checked out branch / commit)
+        - Exercise ->
+                git fetch origin :bar     # creates new branch bar locally 
+                git push origin :foo      # deletes foo from local and remote 
+
+7. Git Pull Arguments 
+        -  git pull at the end of the day is really just shorthand for a fetch followed by merging in whatever 
+        was just fetched. You can think of it as running git fetch with the same arguments specified and 
+        then merging in where those commits ended up.
+        - Ex. 
+        git pull origin foo = git fetch origin foo; git merge o/foo; 
+        git pull origin bar~1:bugFix = git fetch origin bar~1:bugFix; git merge bugFix; 
+        - git pull origin main (with branch bar checked out locally)
+        By specifying main we downloaded commits onto o/main just as normal. Then we merged o/main to our 
+        currently checked out location which is not the local branch main. For this reason it can actually make 
+        sense to run git pull multiple times (with the same args) from different locations in order to 
+        update multiple branches.
+        - git pull origin main:foo 
+        We created a new branch locally named foo, downloaded commits from remote's main onto that branch foo, 
+        and then merged that branch into our currently checked out branch bar.
+        - Exercise:
+                git pull origin bar:foo         # get remote bar commits and create branch foo and merge foo with main (active)
+                git pull origin main:side       # get remote main commits and create branch side and merge side with main (active)
+
+
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

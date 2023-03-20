@@ -1,0 +1,232 @@
+- ssh -> connect to server
+    - ssh username@servername
+- ls 
+    - list all files/folder in current working directory
+    - ls -l (nice format)
+    - ls -al (hidden stuff)
+- pwd
+    - where are you currently (cwd)
+    - pwd 
+- cd
+    - change directory
+    - cd / (root)
+    - cd /usr/bin 
+    - cd .. (parent directory)
+    - cd (home directory)
+- touch
+    - create file
+    - touch abcd 
+    - touch -d tomorrow abcd.txt (create file in future)
+    - touch linode{1..5}  (linode1, linode2,..., linode5)
+- echo
+    - echo "text in file" > abcd.txt
+- nano
+    - edit file in linux
+    - save file (ctrl x+ y then enter )
+- vim
+    - vim <filename>
+    - hit i to insert text
+    -  !wq enter
+- cat 
+    - check contents of file
+    - cat <filename>
+- shred
+    - nobody see whats in that file 
+    - shred <filename>
+- mkdir
+    - new directory 
+    - mkdir <dirname>
+- cp
+    - copy file to directory
+    - cp source target
+- mv 
+    - move file to directory
+    - mv source target
+- rm
+    - remove file
+    - rm <filename>
+- rmdir
+    - remove directory
+    - rmdir <dir>
+    - if not empty then run
+        - rm -r <dir>
+- ln 
+    - create link to file
+    - ln -s abcd.txt alinktofile
+- clear
+    - clear terminal
+- whoami
+    - current user logged in
+- sudo 
+    - elevated permission
+- useradd
+    - add new user
+    - sudo useradd nick
+- adduser
+    - add params like pwd
+    - sudo adduser sahil
+- su 
+    - switch user
+    - su sahil
+- exit
+    - exit out of lot of places back to home
+- passwd
+    - set password for user
+    - sudo passwd nick
+- apt
+    - command to install package
+    - sudo apt update (update all repos)
+    - sudo apt install finger
+- finger
+    - inspect another user
+    - finger austin
+- man 
+    - help on commands
+    - man finger
+- whatis
+    - summary help command
+    - whatis finger
+- which 
+    - where finger installed (one place)
+    - which finger
+- where
+    - where all places finger installed
+    - where finger
+- wget
+    - get stuff from internet
+    - wget <link>
+- curl
+    - get stuff from internet
+    - curl <link> > filename
+- zip
+    - compress file
+    - zip <zipfilecreate> <whatzipinside>
+- unzip
+    - unzip <filename>
+- less
+    - read file 1 page at a time
+    - less <filename>
+- head 
+    - show beginning of file
+    - head <filename>
+- tail
+    - show end of file
+    - tail <filename>
+- cmp
+    - compare two files
+    - cmp <file1> <file2>
+- diff
+    - tell where file difference
+    - diff <file1> <file2>
+- sort 
+    - sorts stuff alphabetically
+    - cat <filename> | sort
+- find
+    - finds file or anything looking for 
+    - find <dir> -name <filename>
+    - find / -name "thebible*"
+    - sudo find . -type f -name ".*"    (find all hidden files)
+    - find . -type f -empty   (empty dirs)
+    - find . -perm /a=x       (all executable files)
+- chmod
+    - make file executable
+    - chmod +x <filename>
+- chown
+    - change ownership of file
+    - chown <user> <filename>
+- sudo apt install net-tools (to get ifconfig)
+- ifconfig
+    - provides ip address of machine
+    - check in eth0
+- ip address
+    - provides ip address of machine
+- grep
+    - ifconfig | grep eth0
+    - ip address | grep eth0 | grep inet
+- awk 
+    - get output of regular expression
+    - ip address | grep eth0 | grep inet | awk '{print $2}'
+- dns server
+    - cat /etc/resolv.conf
+- resolvectl status
+    - provides dns server
+    - resolvectl status
+- ping
+    - check website up
+    - ping networkchuck.com
+    - ping -c 5 -s 500 networkchuck.com  (limit to count of things send and size of packets)
+- traceroute
+    - path taking to get to website on internet
+    - traceroute networkchuck.com
+- netstat
+    - what ports are open on your linux machine
+    - netstat
+    - netstat -tulpn
+- ss 
+    - what ports are open on your linux machine
+    - ss
+    - ss -tulpn
+- iptables 
+    - things getting through firewall
+    - sudo iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT (allow port 80)
+- ufw
+    - sits on iptable and makes it easier
+    - sudo ufw allow 80 (allow port 80)
+    - sudo ufw enable
+    - sudo ufw status
+- uname
+    - tell about system
+    - uname -a
+- neofetch 
+    - pretty version of uname
+    - sudo apt install neofetch
+    - neofetch
+- cal
+    - calendar
+- echo
+    - echo "4+5+6+7" | bc
+- free
+    - check memory available
+- df 
+    - disk space available
+    - df
+    - df -H
+- ps
+    - processes running on system
+    - ps
+    - ps -aux
+- top
+    - processes eating most resources
+- htop
+    - pretty version of top
+- kill
+    - stop processes
+    - ps -aux | grep thisisbash
+    - kill -9 <processid>   (-9 -> forcibly kill)
+- pkill
+    - kill with name and not process id
+    - pkill -f thisisbash
+- stop/start/restart service or daemons
+    - systemctl
+    - sudo systemctl stop apache2
+    - sudo systemcyl start apache2
+    - sudo systemcyl status apache2
+- history
+    - history of all commands
+- reboot
+    - sudo reboot
+- shutdown
+    - sudo shutdown
+    - sudo shutdown -h now (shutdown now)
+- 
+
+
+
+
+
+
+
+
+
+
+
